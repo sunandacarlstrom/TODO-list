@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/507df99975.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="styles.css" />
+    <title>Todo-list</title>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <img src="images/checkmark.png" alt="checkmark" />
+            <h1 id="app" class="page-title">TODO-list</h1>
+        </header>
+        <div class="error-message-container"></div>
+
+        <!-- Formulär -->
+        <form id="task-form">
+            <div class="form-control">
+                <input type="text" class="form-input" id="task-input" name="tasks"
+                    placeholder="Skriv vad du måste göra!" />
+            </div>
+            <div class="form-control">
+                <button type="submit" class="btn btn-primary" id="add">
+                    <i class="fa-solid fa-plus"></i>
+                    Lägg till
+                </button>
+            </div>
+        </form>
+
+        <!-- Sök/filtreringsfunktion -->
+        <div class="filter">
+            <input type="text" class="task-filter" id="filter" placeholder="Sök" />
+        </div>
+
+        <!-- Checklistan -->
+        <ul id="task-list" class="items">
+            <li>
+                Tvätta lakan
+                <button class="btn-remove text-red">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </li>
+
+            <li>
+                Laga mat
+                <button class="btn-remove text-red">
+                    <i class="fa-regular fa-trash-can"></i>
+                </button>
+            </li>
+        </ul>
+
+        <!-- Töm-listan-knapp -->
+        <button class="btn-clear" id="clear-list">Töm listan</button>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+
+</html>
