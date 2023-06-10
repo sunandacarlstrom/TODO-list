@@ -20,34 +20,38 @@ const onAddTask = (e) => {
     // Lägga till uppgiften till listan
     addTaskToDom(task);
     // Återställer textrutan efter att en uppgift har lagts till
-    input.value = ""; 
+    input.value = "";
 };
 
 const addTaskToDom = (task) => {
     const item = document.createElement("li");
     item.appendChild(document.createTextNode(task));
-    item.appendChild(createIconButton("btn-remove text-red")); 
+    item.appendChild(createIconButton("btn-remove text-red"));
 
-    list.appendChild(item); 
+    list.appendChild(item);
 
     console.log(item);
 };
 
-const onClearList = (e) => {};
-
+const onClearList = (e) => {
+    // sålänge det finns ett barn i listan
+    while (list.firstChild) {
+        list.removeChild(list.firstChild);
+    }
+};
 
 const createIconButton = (classes) => {
-    const button = document.createElement("button"); 
-    button.className = classes; 
+    const button = document.createElement("button");
+    button.className = classes;
     button.appendChild(createIcon("fa-regular fa-trash-can"));
-    return button; 
-}
+    return button;
+};
 
 const createIcon = (classes) => {
     const icon = document.createElement("i");
-    icon.className = classes; 
-    return icon; 
-}
+    icon.className = classes;
+    return icon;
+};
 
 // Koppla händelser till elementen
 form.addEventListener("submit", onAddTask);
