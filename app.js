@@ -33,11 +33,21 @@ const addTaskToDom = (task) => {
     console.log(item);
 };
 
+const onClickTask = (e) => {
+    if (e.target.parentElement.classList.contains("btn-remove")) {
+        removeTask(e.target.parentElement.parentElement);
+    }
+};
+
 const onClearList = (e) => {
     // sålänge det finns ett barn i listan
     while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
+};
+
+const removeTask = (item) => {
+    item.remove();
 };
 
 const createIconButton = (classes) => {
@@ -56,3 +66,4 @@ const createIcon = (classes) => {
 // Koppla händelser till elementen
 form.addEventListener("submit", onAddTask);
 clearButton.addEventListener("click", onClearList);
+list.addEventListener("click", onClickTask);
