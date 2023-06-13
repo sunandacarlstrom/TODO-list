@@ -2,6 +2,7 @@
 const form = document.querySelector("#task-form");
 const input = document.querySelector("#task-input");
 const clearButton = document.querySelector("#clear-list");
+const filterInput = document.querySelector("#filter");
 const list = document.querySelector("#task-list");
 
 // Lagra referensen till felmeddelandet när det skapas
@@ -44,7 +45,7 @@ const onAddTask = (e) => {
     // Lägga till uppgiften till listan
     addTaskToDom(task);
     // Återställer textrutan efter att en uppgift har lagts till
-    input.value = "";
+    updateUI();
 };
 
 const addTaskToDom = (task) => {
@@ -61,6 +62,8 @@ const onClickTask = (e) => {
     if (e.target.parentElement.classList.contains("btn-remove")) {
         removeTask(e.target.parentElement.parentElement);
     }
+
+    updateUI();
 };
 
 const onClearList = (e) => {
@@ -68,6 +71,8 @@ const onClearList = (e) => {
     while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
+
+    updateUI();
 };
 
 const removeTask = (item) => {
@@ -94,6 +99,22 @@ const createErrorMessage = (text) => {
     div.classList.add("error-message");
     div.appendChild(textContent);
     return div;
+};
+
+const updateUI = () => {
+    input.value = "";
+
+    // Hämta alla <li>-element på sidan och lagra dem i en variabel som heter "tasks"
+    const tasks = document.querySelectorAll("li");
+
+    // Kontrollera ifall det inte finns någoting i min lista då ska Sök-filtrering och Töm listan-knappen vara dold
+    if (tasks.length === 0) {
+        clearButton.style.display = "none";
+        filterInput.style.display = "none";
+    } else {
+        clearButton.style.display = "block";
+        filterInput.style.display = "block";
+    }
 };
 
 // Koppla händelser till elementen
