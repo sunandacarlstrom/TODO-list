@@ -5,6 +5,15 @@ const clearButton = document.querySelector("#clear-list");
 const filterInput = document.querySelector("#filter");
 const list = document.querySelector("#task-list");
 
+const onDisplayTasks = () => {
+    // Hämta från storage och placera i DOM
+    const tasks = getFromStorage();
+    // för varje sak som finns här i listan ska anropa funktionen "addTaskToDom"
+    tasks.forEach((item) => addTaskToDom(item));
+
+    updateUI();
+};
+
 // Lagra referensen till felmeddelandet när det skapas
 // Detta görs med variabeln "errorMessageElement" beroende på om det redan finns ett felmeddelande eller inte
 let errorMessageElement;
@@ -44,6 +53,8 @@ const onAddTask = (e) => {
 
     // Lägga till uppgiften till listan
     addTaskToDom(task);
+    // Lägga till uppgiften till localStorage
+    addToStorage(task);
     // Återställer textrutan efter att en uppgift har lagts till
     updateUI();
 };
@@ -56,6 +67,33 @@ const addTaskToDom = (task) => {
     list.appendChild(item);
 
     console.log(item);
+};
+
+const addToStorage = (task) => {
+    // Kontrollera om vi redan har någonting i vår storage
+    const tasks = getFromStorage();
+
+    // pushar in den nya uppgiften i listan
+    tasks.push(task);
+
+    // lägger detta till nyckeln "tasks", men jag måste göra om detta till en korrekt sträng med JSON.stringify()
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
+const getFromStorage = () => {
+    let items;
+
+    // Kontrollerar om localStorage innehåller nycklen "tasks"
+    if (localStorage.getItem("tasks") === null) {
+        // skapar en ny tom array
+        items = [];
+        // om den finns vill jag retunera localStorage, men eftersom loclastorage lagrar allting som strängar
+        // därför måste jag göra om objekt/arrayer som lagras i localStorage till strängar men om jag hämta tillbaka måste jag göra om det till dess ursprung med JSON.parse()
+    } else {
+        items = JSON.parse(localStorage.getItem("tasks"));
+    }
+
+    return items;
 };
 
 const onClickTask = (e) => {
@@ -81,12 +119,12 @@ const onFilterTasks = (e) => {
     // Gör om alla söäkninbgar till litenm bokstav för en mer exakt sökning
     const value = e.target.value.toLowerCase();
 
-    // filtrerar på de ord som innehåller angiven bokstav genom att loopa igenom varje element i arrayen "tasks" 
+    // filtrerar på de ord som innehåller angiven bokstav genom att loopa igenom varje element i arrayen "tasks"
     tasks.forEach((item) => {
-        const itemName = item.firstChild.textContent.toLowerCase(); 
+        const itemName = item.firstChild.textContent.toLowerCase();
 
-        // Kontrollera om värdet i varabeln "value" förekommer i "itemName" 
-        // Med metoden indexOf() kan jag göra en sökning efter en delsträng i en sträng 
+        // Kontrollera om värdet i varabeln "value" förekommer i "itemName"
+        // Med metoden indexOf() kan jag göra en sökning efter en delsträng i en sträng
         if (itemName.indexOf(value) != -1) {
             item.style.display = "flex";
         } else {
@@ -138,6 +176,7 @@ const updateUI = () => {
 };
 
 // Koppla händelser till elementen
+document.addEventListener("DOMContentLoaded", onDisplayTasks);
 form.addEventListener("submit", onAddTask);
 clearButton.addEventListener("click", onClearList);
 list.addEventListener("click", onClickTask);
