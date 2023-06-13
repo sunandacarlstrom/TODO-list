@@ -75,6 +75,26 @@ const onClearList = (e) => {
     updateUI();
 };
 
+const onFilterTasks = (e) => {
+    // Hämtar alla <li>-element i listan
+    const tasks = document.querySelectorAll("li");
+    // Gör om alla söäkninbgar till litenm bokstav för en mer exakt sökning
+    const value = e.target.value.toLowerCase();
+
+    // filtrerar på de ord som innehåller angiven bokstav genom att loopa igenom varje element i arrayen "tasks" 
+    tasks.forEach((item) => {
+        const itemName = item.firstChild.textContent.toLowerCase(); 
+
+        // Kontrollera om värdet i varabeln "value" förekommer i "itemName" 
+        // Med metoden indexOf() kan jag göra en sökning efter en delsträng i en sträng 
+        if (itemName.indexOf(value) != -1) {
+            item.style.display = "flex";
+        } else {
+            item.style.display = "none";
+        }
+    });
+};
+
 const removeTask = (item) => {
     item.remove();
 };
@@ -121,3 +141,4 @@ const updateUI = () => {
 form.addEventListener("submit", onAddTask);
 clearButton.addEventListener("click", onClearList);
 list.addEventListener("click", onClickTask);
+filterInput.addEventListener("input", onFilterTasks);
