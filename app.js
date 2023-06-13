@@ -4,17 +4,41 @@ const input = document.querySelector("#task-input");
 const clearButton = document.querySelector("#clear-list");
 const list = document.querySelector("#task-list");
 
+// Lagra referensen till felmeddelandet när det skapas
+// Detta görs med variabeln "errorMessageElement" beroende på om det redan finns ett felmeddelande eller inte
+let errorMessageElement;
+
 // Skapar metoder för respektive händelse
 const onAddTask = (e) => {
+    // Förhindra standardbeteendet hos ett händelseobjekt, i detta fall vill jag inte ladda om sidan eller skicka formuläret till en ny sida
     e.preventDefault();
     // Hämtar värdet ifrån task-input textrutan
     const task = input.value;
 
     // Kontrollera att textrutan innehåller ett värde
     if (task === "") {
-        alert("Du måste ange en vara");
+        // Skapar ett felmeddelande med hjälp av funktionen "createErrorMessage"
+        const errorMsg = createErrorMessage("Du måste ange en uppgift att utföra!");
+
+        // Om det redan finns ett felmeddelande på sidan tas det befintliga meddelandet bort med "errorMessageElement.remove()"
+        if (errorMessageElement) {
+            errorMessageElement.remove();
+        }
+
+        // Variabeln "errorMessageElement" tilldelas ett nytt värde dvs. värdet av errorMsg
+        errorMessageElement = errorMsg;
+        // Slutligen läggs felmeddelandet till i DOM genom att använda appendChild-metoden på ".error-message-container"-elementet
+        document.querySelector(".error-message-container").appendChild(errorMsg);
 
         return;
+    }
+
+    // Ta bort felmeddelandet när användaren skriver in någoting i input-rutan
+    if (errorMessageElement) {
+        // Om task inte är tomt dvs. det finns en uppgift inskriven i input-rutan, kontrolleras om "errorMessageElement" innehåller en referens till ett felmeddelande.
+        // Om så är fallet, tas det befintliga felmeddelandet bort från DOM genom att använda errorMessageElement.remove() och errorMessageElement återställs till null.
+        errorMessageElement.remove();
+        errorMessageElement = null;
     }
 
     // Lägga till uppgiften till listan
@@ -61,6 +85,15 @@ const createIcon = (classes) => {
     const icon = document.createElement("i");
     icon.className = classes;
     return icon;
+};
+
+const createErrorMessage = (text) => {
+    const div = document.createElement("div");
+    div.id = "error-message";
+    const textContent = document.createTextNode(text);
+    div.classList.add("error-message");
+    div.appendChild(textContent);
+    return div;
 };
 
 // Koppla händelser till elementen
