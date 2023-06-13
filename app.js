@@ -96,6 +96,17 @@ const getFromStorage = () => {
     return items;
 };
 
+const removeFromStorage = (task) => {
+    // Hämtar in alla element i listan
+    let tasks = getFromStorage();
+
+    // Skapar en ny array med .filter med allt som finns där minus det jag vill ta bort
+    tasks = tasks.filter((item) => item !== task);
+
+    // anropa det som finns i localStorage och skriver över det som finns i min nya lista
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+};
+
 const onClickTask = (e) => {
     if (e.target.parentElement.classList.contains("btn-remove")) {
         removeTask(e.target.parentElement.parentElement);
@@ -109,6 +120,9 @@ const onClearList = (e) => {
     while (list.firstChild) {
         list.removeChild(list.firstChild);
     }
+
+    // raderar ett eller flera objekt i localStorage
+    localStorage.removeItem("tasks");
 
     updateUI();
 };
@@ -134,7 +148,11 @@ const onFilterTasks = (e) => {
 };
 
 const removeTask = (item) => {
+    // raderar i DOM
     item.remove();
+
+    // samtidigt raderar ett objekt i localStorage
+    removeFromStorage(item.textContent);
 };
 
 const createIconButton = (classes) => {
