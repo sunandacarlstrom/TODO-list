@@ -66,6 +66,11 @@ const onSaveTask = (e) => {
         taskToUpdate.remove();
         // justera isInEditMode
         isInEditMode = false;
+    } else {
+        if (checkIfTaskExists(task)) {
+            alert("Finns redan i listan");
+            return;
+        }
     }
 
     // Lägga till uppgiften till listan
@@ -132,7 +137,14 @@ const onClickTask = (e) => {
         editTask(e.target);
     }
 
-    updateUI(); 
+    updateUI();
+};
+
+const checkIfTaskExists = (task) => {
+    // Hämta ifrån localStorage
+    const taskFromStorage = getFromStorage();
+    // istället för att skriva en if-sats så kan jag direkt skriva return med följande påstående
+    return taskFromStorage.includes(task);
 };
 
 const editTask = (task) => {
@@ -229,11 +241,11 @@ const updateUI = () => {
     }
 
     // Justera texten på knappen dynamiskt
-    saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Lägg till'; 
-    saveButton.classList.remove("btn-edit"); 
-    saveButton.classList.add("btn-primary"); 
+    saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Lägg till';
+    saveButton.classList.remove("btn-edit");
+    saveButton.classList.add("btn-primary");
 
-    isInEditMode = false; 
+    isInEditMode = false;
 };
 
 // Koppla händelser till elementen
