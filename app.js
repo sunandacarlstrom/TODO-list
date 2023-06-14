@@ -225,6 +225,13 @@ const updateUI = () => {
         clearButton.style.display = "block";
         filterInput.style.display = "block";
     }
+
+    // Justera texten på knappen
+    saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Lägg till'; 
+    saveButton.classList.remove("btn-edit"); 
+    saveButton.classList.add("btn-primary"); 
+
+    isInEditMode = false; 
 };
 
 // Koppla händelser till elementen
