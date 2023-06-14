@@ -76,15 +76,13 @@ header img {
     outline: none;
 }
 
-.grocery-filter {
-    margin-top: 20px;
+.filter {
+    margin-top: 0.5rem;
     width: 100%;
     font-size: 18px;
-    margin-bottom: 20px;
-    padding: 10px;
+    padding-bottom: 20px;
     border: none;
     border-bottom: 1px solid #ccc;
-    background: transparent;
     outline: none;
 }
 
