@@ -131,6 +131,8 @@ const onClickTask = (e) => {
     } else {
         editTask(e.target);
     }
+
+    updateUI(); 
 };
 
 const editTask = (task) => {
