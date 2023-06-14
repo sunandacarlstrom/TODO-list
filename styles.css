@@ -111,6 +111,10 @@ header img {
     color: #333;
 }
 
+.btn-edit {
+    background-color: green;
+}
+
 .btn-remove {
     font-size: 16px;
     background-color: transparent;
@@ -155,4 +159,5 @@ header img {
     padding: 10px 15px;
     margin: 0 5px 20px;
     font-weight: 400;
+    cursor: pointer;
 }

@@ -4,6 +4,10 @@ const input = document.querySelector("#task-input");
 const clearButton = document.querySelector("#clear-list");
 const filterInput = document.querySelector("#filter");
 const list = document.querySelector("#task-list");
+const saveButton = form.querySelector("button");
+
+// Skapar en variabel som jag sätter till false som standard
+let isInEditMode = false;
 
 const onDisplayTasks = () => {
     // Hämta från storage och placera i DOM
@@ -19,7 +23,7 @@ const onDisplayTasks = () => {
 let errorMessageElement;
 
 // Skapar metoder för respektive händelse
-const onAddTask = (e) => {
+const onSaveTask = (e) => {
     // Förhindra standardbeteendet hos ett händelseobjekt, i detta fall vill jag inte ladda om sidan eller skicka formuläret till en ny sida
     e.preventDefault();
     // Hämtar värdet ifrån task-input textrutan
@@ -49,6 +53,19 @@ const onAddTask = (e) => {
         // Om så är fallet, tas det befintliga felmeddelandet bort från DOM genom att använda errorMessageElement.remove() och errorMessageElement återställs till null.
         errorMessageElement.remove();
         errorMessageElement = null;
+    }
+
+    // Radera och lägga tillbaka på nytt (pga ingen idé att göra en uppdatering i localStorage)
+    if (isInEditMode) {
+        const taskToUpdate = list.querySelector(".edit-mode");
+        // anropa metoden för att ta bort ur mitt localStorage
+        removeFromStorage(taskToUpdate.textContent);
+        // ta bort klassen
+        taskToUpdate.classList.remove(".edit-mode");
+        // ta bort från DOM
+        taskToUpdate.remove();
+        // justera isInEditMode
+        isInEditMode = false;
     }
 
     // Lägga till uppgiften till listan
@@ -110,9 +127,26 @@ const removeFromStorage = (task) => {
 const onClickTask = (e) => {
     if (e.target.parentElement.classList.contains("btn-remove")) {
         removeTask(e.target.parentElement.parentElement);
+        // annars fånga hela <li>-elementet
+    } else {
+        editTask(e.target);
     }
+};
 
-    updateUI();
+const editTask = (task) => {
+    // Ändra utseende när jag är i edit-mode
+    isInEditMode = true;
+
+    // Jag vill att endast ett <li>-element i taget ska markeras i listan vid editering
+    list.querySelectorAll("li").forEach((item) => item.classList.remove("edit-mode"));
+
+    // Ändrar UI för <li>-elementet i listan som har klickats på... och lägg-till knappen
+    task.classList.add("edit-mode");
+    saveButton.classList.add("btn-edit");
+    saveButton.innerHTML = '<i class="fas fa-pencil-alt"></i> Redigera';
+
+    // När jag markerar ett objekt i listan vill jag flytta upp den i input-rutan igen
+    input.value = task.textContent;
 };
 
 const onClearList = (e) => {
@@ -195,7 +229,7 @@ const updateUI = () => {
 
 // Koppla händelser till elementen
 document.addEventListener("DOMContentLoaded", onDisplayTasks);
-form.addEventListener("submit", onAddTask);
+form.addEventListener("submit", onSaveTask);
 clearButton.addEventListener("click", onClearList);
 list.addEventListener("click", onClickTask);
 filterInput.addEventListener("input", onFilterTasks);
