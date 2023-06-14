@@ -20,7 +20,7 @@ const onDisplayTasks = () => {
 
 // Lagra referensen till felmeddelandet när det skapas
 // Detta görs med variabeln "errorMessageElement" beroende på om det redan finns ett felmeddelande eller inte
-let errorMessageElement;
+let errorMessageElement; 
 
 // Skapar metoder för respektive händelse
 const onSaveTask = (e) => {
@@ -42,9 +42,12 @@ const onSaveTask = (e) => {
         // Variabeln "errorMessageElement" tilldelas ett nytt värde dvs. värdet av errorMsg
         errorMessageElement = errorMsg;
         // Slutligen läggs felmeddelandet till i DOM genom att använda appendChild-metoden på ".error-message-container"-elementet
-        document.querySelector(".error-message-container").appendChild(errorMsg);
+        const errorContainer = document.querySelector(".error-message-container");
+        if (errorContainer) {
+            errorContainer.appendChild(errorMsg);
+        }
 
-        return;
+        return; 
     }
 
     // Ta bort felmeddelandet när användaren skriver in någoting i input-rutan
@@ -67,8 +70,23 @@ const onSaveTask = (e) => {
         // justera isInEditMode
         isInEditMode = false;
     } else {
+        // Kontrollera om en uppgift redan står i listan, annars dyker ett felmeddelande upp!
         if (checkIfTaskExists(task)) {
-            alert("Finns redan i listan");
+            const errorMsg = createErrorMessage(`${task} finns redan i listan`);
+            const messageContainer = document.querySelector(".error-message-container");
+            // Kontrollera om "errorMessageElement" är null innan remove()-metoden.
+            if (messageContainer) {
+                messageContainer.appendChild(errorMsg);
+            }
+
+            // Felmeddelandet försvinner efter 3s
+            setTimeout(() => {
+                const msg = document.querySelector("#error-message");
+                if (msg) {
+                    msg.remove();
+                }
+            }, 3000);
+
             return;
         }
     }
@@ -137,7 +155,7 @@ const onClickTask = (e) => {
         editTask(e.target);
     }
 
-    updateUI();
+    // updateUI();
 };
 
 const checkIfTaskExists = (task) => {
