@@ -226,7 +226,7 @@ const updateUI = () => {
         filterInput.style.display = "block";
     }
 
-    // Justera texten på knappen
+    // Justera texten på knappen dynamiskt
     saveButton.innerHTML = '<i class="fa-solid fa-plus"></i> Lägg till'; 
     saveButton.classList.remove("btn-edit"); 
     saveButton.classList.add("btn-primary"); 
